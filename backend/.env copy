@@ -1,0 +1,14 @@
+PORT=4000
+DB_HOST=localhost
+DB_USERNAME=root
+DB_PASSWORD=root
+DB_NAME=express_mysql
+
+# PORT=4000
+# DB_HOST=mysql.railway.internal
+# DB_USERNAME=root
+# DB_PASSWORD=woLJxQyZYNnMvAxdKphXkevuLEaRDzal
+# DB_NAME=railway
+# MYSQL_PUBLIC_URL=mysql://root:woLJxQyZYNnMvAxdKphXkevuLEaRDzal@tramway.proxy.rlwy.net:35499/railway
+# MYSQL_ROOT_PASSWORD=woLJxQyZYNnMvAxdKphXkevuLEaRDzal
+# MYSQL_URL=mysql://root:woLJxQyZYNnMvAxdKphXkevuLEaRDzal@mysql.railway.internal:3306/railway
