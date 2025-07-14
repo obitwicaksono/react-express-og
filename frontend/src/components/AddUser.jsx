@@ -12,7 +12,7 @@ const AddUser = () => {
   const saveUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:4000/users", {
+      await axios.post("https://react-express-og-production.up.railway.app/users", {
         name,
         email,
         address,

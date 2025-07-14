@@ -15,7 +15,7 @@ const EditUser = () => {
 
   const getUserById = async () => {
     // console.log(`'ini id' ${id}`)
-    const response = await axios.get(`http://localhost:4000/users/${id}`);
+    const response = await axios.get(`https://react-express-og-production.up.railway.app/users/${id}`);
     setName(response.data.data.name);
     setEmail(response.data.data.email);
     setAddress(response.data.data.address);
