@@ -10,13 +10,13 @@ const UserList = () => {
   }, []);
 
   const getUsers = async () => {
-    const response = await axios.get("http://localhost:4000/users");
+    const response = await axios.get("https://react-express-og-production.up.railway.app/users");
     setUser(response.data.data);
   };
 
   const deleteUser = async (id) => {
     try {
-      await axios.delete(`http://localhost:4000/users/${id}`);
+      await axios.delete(`https://react-express-og-production.up.railway.app/users/${id}`);
       getUsers();
     } catch (error) {
       console.log(error);
