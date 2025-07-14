@@ -6,13 +6,26 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: express_mysql
       MYSQL_USER: user
-      MYSQL_PASSWORD:
+      MYSQL_PASSWORD: password
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
       - mysql_network
+
+  mydumper:
+    image: mydumper/mydumper:latest
+    container_name: mydumper_container
+    depends_on:
+      - mysql
+    volumes:
+      - ./backups:/backups
+      - ./scripts:/scripts
+    networks:
+      - mysql_network
+    # Container akan berhenti setelah selesai, gunakan command untuk menjalankan backup
+    # Contoh: docker-compose run mydumper mydumper -h mysql -u root -p root -B express_mysql -c -o /backups
 
 volumes:
   mysql_data:
