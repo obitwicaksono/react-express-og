@@ -24,7 +24,7 @@ const EditUser = () => {
   const updateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(`http://localhost:4000/users/${id}`, {
+      await axios.patch(`https://react-express-og-production.up.railway.app/users/${id}`, {
         name,
         email,
         address,
