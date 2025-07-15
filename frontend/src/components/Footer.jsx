@@ -7,7 +7,7 @@ const Footer = () => {
         <div className="flex flex-col items-center md:flex-row md:justify-between">
           {/* Copyright */}
           <div className="text-gray-500 text-sm mb-4 md:mb-0">
-            © 2025 Complify®. All Rights Reserved.
+            © 2025 Obit Wicaksono®. All Rights Reserved.
           </div>
           
           {/* Links */}
