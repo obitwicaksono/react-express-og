@@ -29,7 +29,7 @@ const EditUser = () => {
         email,
         address,
       });
-      navigate("/");
+      navigate("/user");
     } catch (error) {
       console.log(error);
     }
