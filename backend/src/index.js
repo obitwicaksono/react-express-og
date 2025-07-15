@@ -5,12 +5,9 @@ const app = express();
 const usersRoutes = require("./routes/users");
 const middlewareLogRequest = require("./middleware/logs");
 const cors = require('cors');
-app.use(cors({
-  origin: ['https://react-express-production.up.railway.app', 'http://localhost:5173']
-}));
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['https://react-express-production.up.railway.app', 'http://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
