@@ -7,7 +7,9 @@ const middlewareLogRequest = require("./middleware/logs");
 const cors = require('cors');
 
 app.use(cors({
-  origin: "https://obit-react-express.netlify.app/",
+  origin: "https://obit-react-express.netlify.app", // tanpa slash di belakang
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
 }));
 
 app.use(middlewareLogRequest);
