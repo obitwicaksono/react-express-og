@@ -8,7 +8,7 @@ const cors = require('cors');
 
 app.use(cors({
   origin: "https://obit-react-express.netlify.app", // tanpa slash di belakang
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   credentials: true
 }));
 
