@@ -7,9 +7,7 @@ const middlewareLogRequest = require("./middleware/logs");
 const cors = require('cors');
 
 app.use(cors({
-  origin: ['https://react-express-og.vercel.app/', 'http://localhost:3000'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: "https://obit-react-express.netlify.app/",
 }));
 
 app.use(middlewareLogRequest);
