@@ -7,23 +7,13 @@ const middlewareLogRequest = require("./middleware/logs");
 const cors = require('cors');
 
 app.use(cors({
-  origin: ['https://react-express-production.up.railway.app', 'http://localhost:3000'],
+  origin: ['https://react-express-og.vercel.app/', 'http://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type']
 }));
 
 app.use(middlewareLogRequest);
 app.use(express.json())
-
-app.use((req, res, next) => {
-  console.log("middleware 1");
-  next();
-});
-
-app.use((req, res, next) => {
-  console.log("middleware 2");
-  next();
-});
 
 app.use("/users", usersRoutes);
 
