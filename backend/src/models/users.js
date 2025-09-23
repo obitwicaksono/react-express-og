@@ -1,51 +1,38 @@
-const supabase = require('../config/database');
+const dbPool = require('../config/database')
 
-const Users = {
-  getAllUsers: async () => {
-    const { data, error } = await supabase
-      .from('users')
-      .select('*');
-    if (error) throw error;
-    return data;
-  },
+const getAllUsers = () => {
+    const SQLQuery = 'SELECT * FROM users';
+    return dbPool.execute(SQLQuery);
+}
 
-  getUserById: async (id) => {
-    const { data, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', id)
-      .single();
-    if (error) throw error;
-    return data;
-  },
+const getUserById = (idUser) => {
+    const SQLQuery = 'SELECT name, email, address FROM users WHERE id = ?';
+    return dbPool.execute(SQLQuery, [idUser]);
+}
 
-  createUser: async (userData) => {
-    const { data, error } = await supabase
-      .from('users')
-      .insert([userData])
-      .select();
-    if (error) throw error;
-    return data[0];
-  },
+const createNewUser = (body) => {
+    const SQLQuery = `  INSERT INTO users (name, email, address)
+                        VALUES ('${body.name}', '${body.email}', '${body.address}')`;
+    return dbPool.execute(SQLQuery);
+}
 
-  updateUser: async (id, userData) => {
-    const { data, error } = await supabase
-      .from('users')
-      .update(userData)
-      .eq('id', id)
-      .select();
-    if (error) throw error;
-    return data[0];
-  },
+const updateUser = (body, idUser) => {
+    const SQLQuery = `  UPDATE users
+                        SET name='${body.name}', email='${body.email}', address='${body.address}'
+                        WHERE id='${idUser}'`;
+    return dbPool.execute(SQLQuery);
+}
 
-  deleteUser: async (id) => {
-    const { error } = await supabase
-      .from('users')
-      .delete()
-      .eq('id', id);
-    if (error) throw error;
-    return true;
-  }
-};
+const deleteUser = (idUser) => {
+    const SQLQuery = `DELETE FROM users WHERE id=${idUser}`;
+    return dbPool.execute(SQLQuery);
+}
 
-module.exports = Users;
+
+module.exports = {
+    getAllUsers,
+    createNewUser,
+    updateUser,
+    deleteUser,
+    getUserById,
+}
