@@ -1,12 +1,9 @@
-const mysql = require('mysql2');
+const { createClient } = require('@supabase/supabase-js');
 
-// Konfigurasi koneksi ke MySQL
-const dbPool = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: 3306
-});
+// Konfigurasi koneksi ke Supabase
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
+);
 
-module.exports = dbPool.promise();
+module.exports = supabase;
