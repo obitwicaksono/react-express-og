@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -6,11 +6,47 @@ const AddUser = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  const [existingEmails, setExistingEmails] = useState([]);
 
   const navigate = useNavigate();
 
+  // Fetch existing emails when component mounts
+  useEffect(() => {
+    const fetchExistingEmails = async () => {
+      try {
+        const response = await axios.get(
+          "https://react-express-og.vercel.app/users"
+        );
+        const emails = response.data.data.map((user) => user.email);
+        setExistingEmails(emails);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchExistingEmails();
+  }, []);
+
+  // Email validation handler
+  const handleEmailChange = (e) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+
+    if (existingEmails.includes(newEmail)) {
+      setEmailError("Email sudah terdaftar!");
+      setIsEmailValid(false);
+    } else {
+      setEmailError("");
+      setIsEmailValid(true);
+    }
+  };
+
   const saveUser = async (e) => {
     e.preventDefault();
+    if (!isEmailValid) {
+      return; // Prevent form submission if email is invalid
+    }
     try {
       await axios.post("https://react-express-og.vercel.app/users", {
         name,
@@ -48,11 +84,16 @@ const AddUser = () => {
             type="email"
             id="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            onChange={handleEmailChange}
+            className={`bg-gray-50 border ${
+              !isEmailValid ? "border-red-500" : "border-gray-300"
+            } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5`}
             placeholder="name@email.com"
             required
           />
+          {emailError && (
+            <p className="mt-2 text-sm text-red-600">{emailError}</p>
+          )}
         </div>
         <div className="mb-5">
           <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -68,7 +109,12 @@ const AddUser = () => {
         </div>
         <button
           type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+          disabled={!isEmailValid}
+          className={`text-white ${
+            isEmailValid
+              ? "bg-blue-700 hover:bg-blue-800"
+              : "bg-gray-400 cursor-not-allowed"
+          } focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center`}
         >
           Submit
         </button>
