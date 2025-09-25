@@ -44,9 +44,13 @@ const AddUser = () => {
 
   const saveUser = async (e) => {
     e.preventDefault();
-    if (!isEmailValid) {
-      return; // Prevent form submission if email is invalid
+
+    // Check for duplicate email before submitting
+    if (existingEmails.includes(email)) {
+      alert("Email sudah terdaftar! Silakan gunakan email lain.");
+      return;
     }
+
     try {
       await axios.post("https://react-express-og.vercel.app/users", {
         name,
@@ -55,6 +59,11 @@ const AddUser = () => {
       });
       navigate("/user");
     } catch (error) {
+      if (error.response && error.response.status === 400) {
+        alert("Email sudah terdaftar! Silakan gunakan email lain.");
+      } else {
+        alert("Terjadi kesalahan! Silakan coba lagi.");
+      }
       console.log(error);
     }
   };
