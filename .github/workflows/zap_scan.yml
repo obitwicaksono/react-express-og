@@ -3,13 +3,32 @@ name: OWASP ZAP Scan
 on:
   workflow_dispatch:   # manual trigger
   schedule:
-    - cron: '0 0 * * 0'  # tiap minggu
+    - cron: '0 0 * * 0'  # tiap minggu (Minggu 00:00 UTC)
+
+permissions:
+  contents: read
+  issues: write    # biar bisa buat issue otomatis hasil scan
 
 jobs:
   zap_scan:
     runs-on: ubuntu-latest
+
     steps:
-      - name: ZAP Baseline Scan
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run ZAP Baseline Scan
         uses: zaproxy/action-baseline@v0.9.0
         with:
           target: "https://obit-react-express.netlify.app/"
+          # Jika TIDAK mau buat issue otomatis → uncomment baris di bawah ini:
+          # cmd_options: "-I"
+
+      - name: Upload ZAP Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-report
+          path: |
+            report_html.html
+            report_json.json
+            report_md.md
