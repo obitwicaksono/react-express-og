@@ -16,9 +16,9 @@ export default function App() {
         <Route
           path="/user"
           element={
-            <ProtectedRoute>
+            // <ProtectedRoute>
               <UserList />
-            </ProtectedRoute>
+            // {/* </ProtectedRoute> */}
           }
         />
       </Routes>
