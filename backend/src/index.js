@@ -45,6 +45,10 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+app.get('/users', (req, res) => {
+  res.json([{ id: 1, name: 'Test' }]);
+});
+
 app.listen(PORT, () => {
   console.log(`server running http://localhost:${PORT}`);
 });
