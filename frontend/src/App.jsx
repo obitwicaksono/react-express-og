@@ -16,11 +16,27 @@ export default function App() {
         <Route
           path="/user"
           element={
-            // <ProtectedRoute>
+            <ProtectedRoute>
               <UserList />
-            // {/* </ProtectedRoute> */}
+            </ProtectedRoute>
           }
         />
+        <Route
+        path="add"
+          element={
+            <ProtectedRoute>
+            <AddUser />
+            </ProtectedRoute>
+          }
+          />
+          <Route
+        path="user/edit/:id"
+          element={
+            <ProtectedRoute>
+            <EditUser />
+            </ProtectedRoute>
+          }
+          />
       </Routes>
       <Footer />
     </div>
