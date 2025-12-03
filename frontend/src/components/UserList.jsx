@@ -11,7 +11,7 @@ const UserList = () => {
   }, []);
 
   const getUsers = async () => {
-    const response = await axios.get("https://react-express-og.vercel.app/users");
+    const response = await axios.get("https://react-express-og.vercel.app");
     setUser(response.data.data);
   };
 
