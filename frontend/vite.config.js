@@ -7,6 +7,8 @@ export default defineConfig({
   build: {
       rollupOptions: {
         external: ['@react-oauth/google']
-      }
+      },
+      outDir: 'dist',
+      sourcemap: false
     }
 })
