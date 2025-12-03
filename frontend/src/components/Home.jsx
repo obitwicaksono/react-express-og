@@ -1,13 +1,14 @@
-import React from "react";
-import Header from "./Header";
-import Footer from "./Footer";
-import { Link } from 'react-router-dom';
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import GoogleSignInButton from "./GoogleSignInButton";
+import { AuthContext } from "../contexts/AuthContext";
+import { googleLogout } from "@react-oauth/google";
 
 export function Home() {
+  const { user, logout } = useContext(AuthContext);
+
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
-      
       <main className="flex-grow">
         <section className="bg-white">
           <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16">
@@ -51,12 +52,23 @@ export function Home() {
               >
                 Learn more
               </a>
+              <main className="container">
+                {!user ? (
+                  <>
+                    <p>Silakan sign in dengan Google untuk melanjutkan.</p>
+                    <GoogleSignInButton />
+                  </>
+                ) : (
+                  <>
+                    <p>Signed in as {user.name}</p>
+                    <Link to="/user">Masuk ke halaman user</Link>
+                  </>
+                )}
+              </main>
             </div>
           </div>
         </section>
       </main>
-      
-      <Footer />
     </div>
   );
 }
