@@ -67,12 +67,42 @@ const UserList = () => {
 
   return (
     <div className="min-h-screen p-4">
-      <div className="flex justify-center items-center my-3">
+      {/* Add Back + Add New buttons */}
+      <div className="hidden md:flex justify-center items-center my-3 space-x-3">
+        <Link
+          to="/"
+          className="inline-flex justify-center items-center py-2.5 px-4 text-sm font-medium text-gray-800 bg-gray-200 hover:bg-gray-300 rounded-lg focus:ring-4 focus:outline-none focus:ring-gray-200"
+        >
+          {/* back icon */}
+          <svg
+            className="w-4 h-4 -ms-1 me-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Back
+        </Link>
+
         <Link
           to="/add"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center max-w-xs"
+          className="inline-flex justify-center items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center max-w-xs"
         >
-          Add New
+          {/* plus icon */}
+          <svg
+            className="w-4 h-4 me-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path>
+          </svg>
+          Add
         </Link>
       </div>
       
