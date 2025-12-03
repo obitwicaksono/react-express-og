@@ -15,7 +15,7 @@ const EditUser = () => {
 
   const getUserById = async () => {
     // console.log(`'ini id' ${id}`)
-    const response = await axios.get(`https://react-express-og-production.up.railway.app/users/${id}`);
+    const response = await axios.get(`https://react-express-og.vercel.app/users/${id}`);
     setName(response.data.data.name);
     setEmail(response.data.data.email);
     setAddress(response.data.data.address);
@@ -24,7 +24,7 @@ const EditUser = () => {
   const updateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(`https://react-express-og-production.up.railway.app/users/${id}`, {
+      await axios.patch(`https://react-express-og.vercel.app/users/${id}`, {
         name,
         email,
         address,
