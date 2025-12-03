@@ -5,10 +5,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
-      rollupOptions: {
-        external: ['@react-oauth/google']
-      },
-      outDir: 'dist',
-      sourcemap: false
+    rollupOptions: {
+      // remove '@react-oauth/google' so it gets bundled
+      // external: [ /* ...other externals... */ ],
     }
+  }
 })
