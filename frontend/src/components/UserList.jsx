@@ -11,8 +11,15 @@ const UserList = () => {
   }, []);
 
   const getUsers = async () => {
-    const response = await axios.get("https://react-express-og.vercel.app/users");
-    setUser(response.data.data);
+    setLoading(true);
+    try {
+      const response = await axios.get("https://react-express-og.vercel.app/users");
+      setUser(response.data.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const deleteUser = async (id) => {
