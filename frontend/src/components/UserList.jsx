@@ -13,7 +13,9 @@ const UserList = () => {
   const getUsers = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("https://react-express-og.vercel.app/users");
+      const response = await axios.get(
+        "https://react-express-og.vercel.app/users"
+      );
       setUser(response.data.data);
     } catch (error) {
       console.log(error);
@@ -34,10 +36,18 @@ const UserList = () => {
   // Skeleton loader for table rows
   const TableRowSkeleton = () => (
     <tr className="animate-pulse">
-      <td className="p-3"><div className="h-4 bg-gray-200 rounded w-8"></div></td>
-      <td className="p-3"><div className="h-4 bg-gray-200 rounded w-32"></div></td>
-      <td className="p-3"><div className="h-4 bg-gray-200 rounded w-48"></div></td>
-      <td className="p-3"><div className="h-4 bg-gray-200 rounded w-40"></div></td>
+      <td className="p-3">
+        <div className="h-4 bg-gray-200 rounded w-8"></div>
+      </td>
+      <td className="p-3">
+        <div className="h-4 bg-gray-200 rounded w-32"></div>
+      </td>
+      <td className="p-3">
+        <div className="h-4 bg-gray-200 rounded w-48"></div>
+      </td>
+      <td className="p-3">
+        <div className="h-4 bg-gray-200 rounded w-40"></div>
+      </td>
       <td className="p-3">
         <div className="flex justify-center space-x-2">
           <div className="h-8 bg-gray-200 rounded w-16"></div>
@@ -68,7 +78,7 @@ const UserList = () => {
   return (
     <div className="min-h-screen p-4">
       {/* Add Back + Add New buttons */}
-      <div className="hidden md:flex justify-center items-center my-3 space-x-3">
+      <div className="flex justify-center items-center my-3 space-x-3">
         <Link
           to="/"
           className="inline-flex justify-center items-center py-2.5 px-4 text-sm font-medium text-gray-800 bg-gray-200 hover:bg-gray-300 rounded-lg focus:ring-4 focus:outline-none focus:ring-gray-200"
@@ -82,7 +92,12 @@ const UserList = () => {
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M15 19l-7-7 7-7"
+            ></path>
           </svg>
           Back
         </Link>
@@ -100,58 +115,73 @@ const UserList = () => {
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M12 4v16m8-8H4"
+            ></path>
           </svg>
           Add
         </Link>
       </div>
-      
+
       {/* Desktop Table View */}
       <div className="hidden md:flex justify-center items-start">
         <div className="w-full max-w-6xl overflow-x-auto">
           <table className="w-full border-collapse border border-gray-300 shadow-md rounded-lg overflow-hidden">
             <thead className="bg-gray-100">
               <tr>
-                <th className="p-3 text-left border-b border-gray-300 font-semibold text-gray-700">No</th>
-                <th className="p-3 text-left border-b border-gray-300 font-semibold text-gray-700">Nama</th>
-                <th className="p-3 text-left border-b border-gray-300 font-semibold text-gray-700">Email</th>
-                <th className="p-3 text-left border-b border-gray-300 font-semibold text-gray-700">Alamat</th>
-                <th className="p-3 text-left border-b border-gray-300 font-semibold text-gray-700">Action</th>
+                <th className="p-3 text-left border-b border-gray-300 font-semibold text-gray-700">
+                  No
+                </th>
+                <th className="p-3 text-left border-b border-gray-300 font-semibold text-gray-700">
+                  Nama
+                </th>
+                <th className="p-3 text-left border-b border-gray-300 font-semibold text-gray-700">
+                  Email
+                </th>
+                <th className="p-3 text-left border-b border-gray-300 font-semibold text-gray-700">
+                  Alamat
+                </th>
+                <th className="p-3 text-left border-b border-gray-300 font-semibold text-gray-700">
+                  Action
+                </th>
               </tr>
             </thead>
             <tbody>
-              {loading ? (
-                // Show 5 skeleton rows while loading
-                [...Array(5)].map((_, index) => <TableRowSkeleton key={index} />)
-              ) : (
-                users.map((user, index) => (
-                  <tr
-                    key={user.id}
-                    className="hover:bg-gray-50 transition-colors duration-200 border-b border-gray-200 last:border-b-0"
-                  >
-                    <td className="p-3 text-gray-700">{index + 1}</td>
-                    <td className="p-3 text-gray-700">{user.name}</td>
-                    <td className="p-3 text-gray-700">{user.email}</td>
-                    <td className="p-3 text-gray-700">{user.address}</td>
-                    <td>
-                      <div className="flex justify-center space-x-2">
-                        <Link
-                          to={`edit/${user.id}`}
-                          className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-3 py-1.5"
-                        >
-                          Edit
-                        </Link>
-                        <button 
-                          onClick={() => deleteUser(user.id)} 
-                          className="focus:outline-none text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-3 py-1.5"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
+              {loading
+                ? // Show 5 skeleton rows while loading
+                  [...Array(5)].map((_, index) => (
+                    <TableRowSkeleton key={index} />
+                  ))
+                : users.map((user, index) => (
+                    <tr
+                      key={user.id}
+                      className="hover:bg-gray-50 transition-colors duration-200 border-b border-gray-200 last:border-b-0"
+                    >
+                      <td className="p-3 text-gray-700">{index + 1}</td>
+                      <td className="p-3 text-gray-700">{user.name}</td>
+                      <td className="p-3 text-gray-700">{user.email}</td>
+                      <td className="p-3 text-gray-700">{user.address}</td>
+                      <td>
+                        <div className="flex justify-center space-x-2">
+                          <Link
+                            to={`edit/${user.id}`}
+                            className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-3 py-1.5"
+                          >
+                            Edit
+                          </Link>
+                          <button
+                            onClick={() => deleteUser(user.id)}
+                            className="focus:outline-none text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-3 py-1.5"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
             </tbody>
           </table>
         </div>
@@ -159,51 +189,50 @@ const UserList = () => {
 
       {/* Mobile Card View */}
       <div className="md:hidden space-y-4">
-        {loading ? (
-          // Show 3 skeleton cards while loading
-          [...Array(3)].map((_, index) => <CardSkeleton key={index} />)
-        ) : (
-          users.map((user, index) => (
-            <div
-              key={user.id}
-              className="bg-white border border-gray-300 rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-200"
-            >
-              <div className="flex justify-between items-start mb-3">
-                <div className="flex-1">
-                  <div className="flex items-center mb-2">
-                    <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                      #{index + 1}
-                    </span>
+        {loading
+          ? // Show 3 skeleton cards while loading
+            [...Array(3)].map((_, index) => <CardSkeleton key={index} />)
+          : users.map((user, index) => (
+              <div
+                key={user.id}
+                className="bg-white border border-gray-300 rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-200"
+              >
+                <div className="flex justify-between items-start mb-3">
+                  <div className="flex-1">
+                    <div className="flex items-center mb-2">
+                      <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                        #{index + 1}
+                      </span>
+                    </div>
+                    <h3 className="font-semibold text-gray-900 text-lg mb-1">
+                      {user.name}
+                    </h3>
+                    <p className="text-gray-600 text-sm mb-1">
+                      <span className="font-medium">Email:</span> {user.email}
+                    </p>
+                    <p className="text-gray-600 text-sm">
+                      <span className="font-medium">Alamat:</span>{" "}
+                      {user.address}
+                    </p>
                   </div>
-                  <h3 className="font-semibold text-gray-900 text-lg mb-1">
-                    {user.name}
-                  </h3>
-                  <p className="text-gray-600 text-sm mb-1">
-                    <span className="font-medium">Email:</span> {user.email}
-                  </p>
-                  <p className="text-gray-600 text-sm">
-                    <span className="font-medium">Alamat:</span> {user.address}
-                  </p>
+                </div>
+
+                <div className="flex space-x-2 mt-4">
+                  <Link
+                    to={`edit/${user.id}`}
+                    className="flex-1 text-center text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2"
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    onClick={() => deleteUser(user.id)}
+                    className="flex-1 focus:outline-none text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-4 py-2"
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
-              
-              <div className="flex space-x-2 mt-4">
-                <Link
-                  to={`edit/${user.id}`}
-                  className="flex-1 text-center text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2"
-                >
-                  Edit
-                </Link>
-                <button 
-                  onClick={() => deleteUser(user.id)} 
-                  className="flex-1 focus:outline-none text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-4 py-2"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))
-        )}
+            ))}
       </div>
     </div>
   );
