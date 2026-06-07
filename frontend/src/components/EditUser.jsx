@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+
 const EditUser = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -15,7 +17,7 @@ const EditUser = () => {
 
   const getUserById = async () => {
     // console.log(`'ini id' ${id}`)
-    const response = await axios.get(`https://react-express-og.vercel.app/users/${id}`);
+    const response = await axios.get(`${API_URL}/users/${id}`);
     setName(response.data.data.name);
     setEmail(response.data.data.email);
     setAddress(response.data.data.address);
@@ -24,7 +26,7 @@ const EditUser = () => {
   const updateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(`https://react-express-og.vercel.app/users/${id}`, {
+      await axios.patch(`${API_URL}/users/${id}`, {
         name,
         email,
         address,

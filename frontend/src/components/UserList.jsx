@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+
 const UserList = () => {
   const [users, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,9 +15,7 @@ const UserList = () => {
   const getUsers = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        "https://react-express-og.vercel.app/users"
-      );
+      const response = await axios.get(`${API_URL}/users`);
       setUser(response.data.data);
     } catch (error) {
       console.log(error);
@@ -26,7 +26,7 @@ const UserList = () => {
 
   const deleteUser = async (id) => {
     try {
-      await axios.delete(`https://react-express-og.vercel.app/users/${id}`);
+      await axios.delete(`${API_URL}/users/${id}`);
       getUsers();
     } catch (error) {
       console.log(error);

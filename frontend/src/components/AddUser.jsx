@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+
 const AddUser = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,9 +18,7 @@ const AddUser = () => {
   useEffect(() => {
     const fetchExistingEmails = async () => {
       try {
-        const response = await axios.get(
-          "https://react-express-og.vercel.app/users"
-        );
+        const response = await axios.get(`${API_URL}/users`);
         const emails = response.data.data.map((user) => user.email);
         setExistingEmails(emails);
       } catch (error) {
@@ -52,7 +52,7 @@ const AddUser = () => {
     }
 
     try {
-      await axios.post("https://react-express-og.vercel.app/users", {
+      await axios.post(`${API_URL}/users`, {
         name,
         email,
         address,
