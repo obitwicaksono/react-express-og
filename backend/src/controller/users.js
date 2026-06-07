@@ -2,35 +2,36 @@ const UsersModel = require("../models/users");
 
 const getAllUsers = async (req, res) => {
   try {
-    const [data] = await UsersModel.getAllUsers();
+    const result = await UsersModel.getAllUsers();
     res.json({
       message: "GET users successfully",
-      data: data,
+      data: result.rows,
     });
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
-      serverMessage: error,
+      serverMessage: error.message,
     });
   }
 };
 
 const getUserById = async (req, res) => {
   const { idUser } = req.params;
-  const { body } = req;
   try {
-    const [result] = await UsersModel.getUserById(idUser);
+    const result = await UsersModel.getUserById(idUser);
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
     res.json({
-      message: "get user by id successfully",
-      data: {
-        ...result[0],
-        ...body,
-      },
+      message: "Get user by id successfully",
+      data: result.rows[0],
     });
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
-      serverMessage: error,
+      serverMessage: error.message,
     });
   }
 };
@@ -38,15 +39,15 @@ const getUserById = async (req, res) => {
 const createNewUser = async (req, res) => {
   const { body } = req;
   try {
-    await UsersModel.createNewUser(body);
-    res.json({
-      message: "create users successfully",
-      data: body,
+    const result = await UsersModel.createNewUser(body);
+    res.status(201).json({
+      message: "Create user successfully",
+      data: result.rows[0],
     });
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
-      serverMessage: error,
+      serverMessage: error.message,
     });
   }
 };
@@ -55,18 +56,20 @@ const updateUser = async (req, res) => {
   const { idUser } = req.params;
   const { body } = req;
   try {
-    await UsersModel.updateUser(body, idUser);
+    const result = await UsersModel.updateUser(body, idUser);
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
     res.json({
-      message: "update user successfully",
-      data: {
-        idUser,
-        ...body,
-      },
+      message: "Update user successfully",
+      data: result.rows[0],
     });
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
-      serverMessage: error,
+      serverMessage: error.message,
     });
   }
 };
@@ -74,15 +77,20 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   const { idUser } = req.params;
   try {
-    await UsersModel.deleteUser(idUser);
+    const result = await UsersModel.deleteUser(idUser);
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
     res.json({
-      message: "delete user successfully",
-      data: null,
+      message: "Delete user successfully",
+      data: result.rows[0],
     });
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
-      serverMessage: error,
+      serverMessage: error.message,
     });
   }
 };
