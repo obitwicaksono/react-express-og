@@ -4,7 +4,7 @@ A full‑stack web application built with **React** (Vite) on the frontend and *
 
 ---
 
-## Live Demo
+## Website
 [https://obit-react-express.netlify.app/](https://obit-react-express.netlify.app/)
 
 ---
