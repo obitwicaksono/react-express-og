@@ -11,9 +11,12 @@ A full‑stack web application built with **React** (Vite) on the frontend and *
 
 ## Tech Stack
 - **Frontend**: React 18, Vite, Tailwind CSS, Axios, React Router, Google Sign‑In
-- **Backend**: Node.js, Express, PostgreSQL (Neon), dotenv, cors, morgan (custom logger)
-- **Database**: PostgreSQL via Neon (serverless)
-- **Deployment**: Frontend hosted on Netlify, backend can be run locally or deployed to any Node host.
+- **Backend**: Node.js, Express, PostgreSQL (Neon), dotenv, cors
+- **Database**: PostgreSQL via Neon (serverless, free tier)
+- **Deployment**: 
+  - Frontend: Netlify ([Live Demo](https://obit-react-express.netlify.app/))
+  - Backend: Vercel ([API Endpoint](https://react-express-og.vercel.app))
+  - Database: Neon PostgreSQL (serverless)
 
 ---
 
@@ -36,8 +39,8 @@ cd react-express-og
 ### 2. Setup Neon PostgreSQL Database
 1. Visit [neon.tech](https://neon.tech) and create a free account
 2. Create a new project
-3. Copy your connection details (host, username, password, database name)
-4. Keep these credentials for the next step
+3. Copy your **connection string** (looks like: `postgresql://user:pass@host.neon.tech/dbname`)
+4. Keep this connection string for the next step
 
 ### 3. Backend setup
 ```bash
@@ -45,14 +48,16 @@ cd backend
 npm install
 ```
 
-Edit `backend/.env` with your Neon credentials:
+Create `backend/.env` file:
 ```env
 PORT=4000
-DB_HOST=your-neon-host.neon.tech
-DB_USERNAME=your-neon-username
-DB_PASSWORD=your-neon-password
-DB_NAME=your-neon-database
-DB_PORT=5432
+DATABASE_URL=postgresql://your-user:your-password@your-host.neon.tech/your-database?sslmode=require
+```
+
+**Example:**
+```env
+PORT=4000
+DATABASE_URL=postgresql://neondb_owner:abc123@ep-cool-morning-123456.us-east-1.aws.neon.tech/neondb?sslmode=require
 ```
 
 Test the database connection:
@@ -75,29 +80,42 @@ The API will be reachable at `http://localhost:4000`.
 ```bash
 cd ../frontend
 npm install
-npm run dev   # Vite dev server on http://localhost:5173
 ```
-The React app proxies API calls to `http://localhost:4000`.
+
+Create `frontend/.env` file:
+```env
+VITE_API_URL=http://localhost:4000
+VITE_GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
+```
+
+Start the development server:
+```bash
+npm run dev
+```
+The React app will be available at `http://localhost:5173`.
 
 ---
 
 ## Environment Variables
 
 ### Backend (`backend/.env`)
-| Variable | Description | Default |
+| Variable | Description | Example |
 |----------|-------------|---------|
 | `PORT` | Port the Express server listens on | `4000` |
-| `DB_HOST` | PostgreSQL host (Neon endpoint) | - |
-| `DB_USERNAME` | PostgreSQL username | - |
-| `DB_PASSWORD` | PostgreSQL password | - |
-| `DB_NAME` | Database name | - |
-| `DB_PORT` | PostgreSQL port | `5432` |
+| `DATABASE_URL` | PostgreSQL connection string from Neon | `postgresql://user:pass@host.neon.tech/db?sslmode=require` |
+
+**Note:** The backend now uses a **connection string** instead of individual host/user/password variables for simpler configuration.
 
 ### Frontend (`frontend/.env`)
-| Variable | Description |
-|----------|-------------|
-| `VITE_API_URL` | Base URL for the backend API (e.g., `http://localhost:4000`) |
-| `VITE_GOOGLE_CLIENT_ID` | Google OAuth client ID for the **GoogleSignInButton** component |
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `VITE_API_URL` | Base URL for the backend API | `http://localhost:4000` (dev) or `https://your-backend.vercel.app` (prod) |
+| `VITE_GOOGLE_CLIENT_ID` | Google OAuth client ID | `123456789-abc.apps.googleusercontent.com` |
+
+**Important:** 
+- Environment variables must be prefixed with `VITE_` to be accessible in Vite apps
+- For **Netlify deployment**, set these variables in the Netlify dashboard (Site settings → Environment variables)
+- Do **NOT** commit `.env` files to Git (they're already in `.gitignore`)
 
 ---
 
@@ -171,19 +189,68 @@ All responses are JSON. Errors are returned with appropriate HTTP status codes a
 
 ## Database Migration
 
-This project has been migrated from Railway MySQL to Neon PostgreSQL. Key changes:
+This project has been migrated from Railway MySQL to Neon PostgreSQL for better performance, scalability, and cost efficiency.
+
+### Key Changes
 
 - **Query syntax**: `?` placeholders → `$1, $2, $3` (parameterized queries)
 - **Database driver**: `mysql2` → `pg` (node-postgres)
+- **Configuration**: Individual credentials → Connection string
 - **Response format**: MySQL returns `[rows, fields]`, PostgreSQL returns `{rows, fields}`
 - **Security**: Removed SQL injection vulnerabilities by using parameterized queries
+
+### Migration Benefits
+
+- ✅ **Free Tier**: 0.5GB storage, 191 compute hours/month
+- ✅ **Serverless**: Auto-scale and auto-suspend
+- ✅ **Branch Database**: Create database branches for development
+- ✅ **Point-in-time Recovery**: Backup and restore capabilities
+- ✅ **Better Performance**: Modern PostgreSQL engine
+- ✅ **Cost Savings**: ~$60/year compared to paid MySQL hosting
 
 For detailed migration guide, see [`backend/MIGRATION_GUIDE.md`](backend/MIGRATION_GUIDE.md).
 
 ---
 
+## Deployment
+
+### Backend (Vercel)
+
+1. Install Vercel CLI: `npm i -g vercel`
+2. Login: `vercel login`
+3. Deploy: `vercel --prod`
+4. Set environment variable in Vercel dashboard:
+   - `DATABASE_URL`: Your Neon connection string
+
+### Frontend (Netlify)
+
+1. Connect your GitHub repository to Netlify
+2. Build settings:
+   - **Build command**: `npm run build`
+   - **Publish directory**: `dist`
+3. Set environment variables in Netlify dashboard:
+   - `VITE_API_URL`: Your backend URL (e.g., `https://your-backend.vercel.app`)
+   - `VITE_GOOGLE_CLIENT_ID`: Your Google OAuth client ID
+4. Deploy
+
+**Important:** After setting environment variables, trigger a new deploy (not just rebuild) for changes to take effect.
+
+---
+
 ## Testing
 > No automated tests are shipped with this starter. Feel free to add Jest, React Testing Library, or Supertest for the API.
+
+---
+
+## Documentation
+
+This project includes comprehensive documentation:
+
+- [`MIGRATION_GUIDE.md`](backend/MIGRATION_GUIDE.md) - Complete database migration guide
+- [`ENV_CONFIG.md`](frontend/ENV_CONFIG.md) - Frontend environment configuration
+- [`FIX_CORS_NETLIFY.md`](FIX_CORS_NETLIFY.md) - Fix CORS issues in production
+- [`PRODUCTION_VERIFIED.md`](PRODUCTION_VERIFIED.md) - Production verification report
+- [`REMOVE_ENV_FROM_GIT.md`](REMOVE_ENV_FROM_GIT.md) - Security guide for removing credentials from Git
 
 ---
 
@@ -206,9 +273,9 @@ This project is licensed under the MIT License – see the `LICENSE` file for de
 
 ### Database Connection Issues
 If you encounter connection errors:
-1. Verify your Neon credentials in `.env`
+1. Verify your Neon connection string in `backend/.env`
 2. Ensure your Neon database is active (not suspended)
-3. Check that SSL is enabled in `database.js`
+3. Check the connection string format: `postgresql://user:pass@host.neon.tech/db?sslmode=require`
 4. Run `npm run db:test` to diagnose connection issues
 
 ### Migration Issues
@@ -216,6 +283,19 @@ If migrations fail:
 1. Check that your database is empty or drop existing tables
 2. Verify PostgreSQL syntax compatibility
 3. See [`backend/MIGRATION_GUIDE.md`](backend/MIGRATION_GUIDE.md) for detailed troubleshooting
+
+### CORS Errors in Production
+If you get CORS errors when deploying to Netlify:
+1. Ensure `VITE_API_URL` is set in Netlify dashboard (Site settings → Environment variables)
+2. Value should be your backend URL (e.g., `https://your-backend.vercel.app`)
+3. **No trailing slash** in the URL
+4. Redeploy the site after adding the variable
+5. See [`FIX_CORS_NETLIFY.md`](FIX_CORS_NETLIFY.md) for detailed instructions
+
+### Frontend Shows "undefined/users" Error
+This means `VITE_API_URL` is not set:
+- **Local dev:** Create `frontend/.env` file with `VITE_API_URL=http://localhost:4000`
+- **Production (Netlify):** Set the variable in Netlify dashboard, then redeploy
 
 ---
 
